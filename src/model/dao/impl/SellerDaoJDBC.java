@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,9 +68,9 @@ public class SellerDaoJDBC implements SellerDao {
 	public void update(Seller obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement ()
+			st = conn.prepareStatement(
 					"UPDATE seller "
-					+ "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ?"}
+					+ "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ?"
 					+ "WHERE Id = ?"); 
 					
 			st.setString(1, obj.getName());
@@ -77,7 +78,8 @@ public class SellerDaoJDBC implements SellerDao {
 			st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
 			st.setDouble(4, obj.getBaseSalary());
 			st.setInt(5, obj.getDepartment().getId());
-							
+			st.setInt(6, obj.getId());	
+
 			st.executeUpdate();
 		}
 		catch (SQLException e) {
@@ -85,7 +87,8 @@ public class SellerDaoJDBC implements SellerDao {
 		}
 		finally {
 			DB.closeStatement(st);
-		}	
+		}
+	}
 
 	@Override
 	public void deleteById(Integer id) {
